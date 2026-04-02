@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>House Leaderboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0a2342, #2ca58d);
+      color: #fff; margin: 0; padding: 0;
+    }
+    nav { background: #0a2342; padding: 15px; text-align: center; }
+    nav a { color: #fff; margin: 0 20px; text-decoration: none; font-weight: 600; }
+    nav a:hover { color: #2ca58d; border-bottom: 2px solid #2ca58d; }
+    .hero { text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.05); }
+    .logo-left {
+      max-width: 140px;
+      margin: 0 12px;
+      display: inline-block;
+      filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ffffff);
+    }
+    .logo-right {
+      max-width: 175px;
+      margin: 0 12px;
+      display: inline-block;
+      filter: drop-shadow(0 0 2px #000000) drop-shadow(0 0 6px #000000);
+    }
+    .hero h1 { font-size: 2.5em; margin-bottom: 10px; }
+    .hero p { font-size: 1.2em; color: #d1e8e2; }
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 25px;
+      max-width: 800px;
+      margin: 40px auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    canvas {
+      display: block;
+      max-width: 700px;
+      margin: 20px auto;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .leaderboardTable {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+    }
+    .leaderboardTable th, .leaderboardTable td {
+      border: 2px solid #fff;
+      padding: 12px;
+      font-size: 1.2em;
+    }
+    .leaderboardTable th {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+    .leaderboardTable tr.sultan td { background: rgba(255, 87, 87, 0.3); }
+    .leaderboardTable tr.queen td { background: rgba(87, 150, 255, 0.3); }
+    .leaderboardTable tr.chancellor td { background: rgba(87, 255, 150, 0.3); }
+    .leaderboardTable tr.crest td { background: rgba(255, 255, 150, 0.3); }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Report</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="resources.html">Resources</a>
+    <a href="shieldbot.html">ShieldBot</a>
+  </nav>
+
+  <section class="hero">
+    <img src="gis-logo.png" alt="Garden International School Logo" class="logo-left">
+    <img src="shielded-logo.png" alt="ShieldED Logo" class="logo-right">
+    <h1>🏆 House Leaderboard</h1>
+    <p>House points up and school safer</p>
+  </section>
+
+  <div class="card">
+    <canvas id="leaderboardChart"></canvas>
+    <table class="leaderboardTable">
+      <thead>
+        <tr>
+          <th>House</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboardBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('leaderboardChart').getContext('2d');
+    const leaderboardChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ["Sultan","Queen","Chancellor","Crest"],
+        datasets: [{
+          label: 'House Points',
+          data: [0,0,0,0],
+          backgroundColor: ['#ff8a80','#82b1ff','#b9f6ca','#fff59d'],
+          borderColor: '#ffffff',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        animation: { duration: 2000, easing: 'easeOutBounce' },
+        scales: {
+          y: {
+            ticks: { color: '#fff', font: { weight: 'bold' } },
+            grid: { color: 'rgba(255,255,255,0.2)' }
+          },
+          x: {
+            ticks: { color: '#fff', font: { weight: 'bold' } },
+            grid: { color: 'rgba(255,255,255,0.2)' }
+          }
+        }
+      }
+    });
+
+    function loadLeaderboard() {
+      fetch("https://sheetdb.io/api/v1/rc4ijgvrgun9f?nocache=" + Date.now())
+        .then(res => res.json())
+        .then(rows => {
+          const points = {Sultan:0, Queen:0, Chancellor:0, Crest:0};
+
+          rows.forEach(r => {
+            const house = r.HOUSE;  
+            const pts = parseInt(r.POINTS || 0);
+
+            if (house && points.hasOwnProperty(house)) {
+              points[house] += pts;
+            }
+          });
+
+          leaderboardChart.data.labels = Object.keys(points);
+          leaderboardChart.data.datasets[0].data = Object.values(points);
+          leaderboardChart.update();
+
+          const tbody = document.getElementById("leaderboardBody");
+          tbody.innerHTML = "";
+          Object.keys(points).forEach(house => {
+            const row = document.createElement("tr");
+            row.className = house.toLowerCase();
+            row.innerHTML = `<td>${house}</td><td>${points[house]}</td>`;
+            tbody.appendChild(row);
+          });
+        })
+        .catch(err => console.error("Error loading leaderboard:", err));
+    }
+
+    loadLeaderboard();
+    setInterval(loadLeaderboard, 30000);
+  </script>
+</body>
+</html>

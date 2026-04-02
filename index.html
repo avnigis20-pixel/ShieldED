@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ShieldED Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0a2342, #2ca58d);
+      margin: 0; padding: 0; color: #ffffff;
+    }
+    nav {
+      background: #0a2342; padding: 15px; text-align: center;
+    }
+    nav a {
+      color: #fff; margin: 0 20px; text-decoration: none; font-weight: 600;
+      transition: color 0.3s, border-bottom 0.3s;
+    }
+    nav a:hover { color: #2ca58d; border-bottom: 2px solid #2ca58d; }
+    .hero { text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.05); }
+
+    .logo-left {
+      max-width: 140px;
+      margin: 0 12px;
+      display: inline-block;
+      filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ffffff);
+    }
+
+    .logo-right {
+      max-width: 175px;
+      margin: 0 12px;
+      display: inline-block;
+      filter: drop-shadow(0 0 2px #000000) drop-shadow(0 0 6px #000000);
+    }
+
+    .hero h1 { font-size: 2.5em; margin: 20px 0 10px; }
+    .hero p { font-size: 1.2em; color: #d1e8e2; }
+
+    form {
+      background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+      padding: 30px; border-radius: 15px; max-width: 600px;
+      margin: 40px auto; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input, select, textarea, button {
+      width: 100%; padding: 12px; margin-top: 8px;
+      border-radius: 8px; border: none; font-size: 1em;
+    }
+    input, select, textarea { background: rgba(255,255,255,0.2); color: #fff; }
+    textarea { min-height: 100px; }
+    button {
+      background: #2ca58d; color: #fff; font-weight: bold;
+      cursor: pointer; margin-top: 20px; transition: background 0.3s;
+    }
+    button:hover { background: #1f7a6d; }
+    small { font-size: 0.9em; color: #ffd700; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Report</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="resources.html">Resources</a>
+    <a href="shieldbot.html">ShieldBot</a>
+  </nav>
+
+  <section class="hero">
+    <img src="gis-logo.png" alt="Garden International School Logo" class="logo-left">
+    <img src="shielded-logo.png" alt="ShieldED Logo" class="logo-right">
+    <h1>ShieldED: Ready, Respectful, Safe</h1>
+    <p>Anonymous reporting, safer school and house points</p>
+  </section>
+
+  <form id="reportForm">
+    <label>House:</label>
+    <select name="HOUSE">
+      <option>Sultan</option>
+      <option>Queen</option>
+      <option>Chancellor</option>
+      <option>Crest</option>
+    </select>
+
+    <label>Year:</label>
+    <select name="YEAR">
+      <option>Y7</option><option>Y8</option><option>Y9</option>
+      <option>Y10</option><option>Y11</option><option>Y12</option><option>Y13</option>
+    </select>
+
+    <label>Report Type:</label>
+    <select name="REPORT TYPE"><option>Online</option><option>In-School</option></select>
+
+    <label>Category:</label>
+    <select name="CATEGORY"><option>Cyberbullying</option><option>Social Media</option><option>Vaping</option><option>Other</option></select>
+
+    <label>Description:</label>
+    <textarea name="DESCRIPTION" required></textarea>
+
+    <label>Names Involved (optional):</label>
+    <input type="text" name="NAMES INVOLVED">
+
+    <label>Action Preference:</label>
+    <select name="ACTION PREFERRED"><option>Talk to adult</option><option>Just report</option></select>
+
+    <label>Name (Optional):</label>
+    <input type="text" name="NAME (OPT)">
+    <small>This part is optional. If you prefer to stay anonymous, we respect that—but please know we may not be able to follow up or provide direct help without a name.</small>
+
+    <button type="submit">Submit Report</button>
+  </form>
+
+  <script>
+    document.getElementById("reportForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const anonId = "Anon_" + Math.floor(Math.random() * 100000);
+      const data = {
+        "TIMESTAMPS": new Date().toISOString(),
+        "ANONYMOUS ID": anonId,
+        "HOUSE": e.target["HOUSE"].value,
+        "YEAR": e.target["YEAR"].value,
+        "REPORT TYPE": e.target["REPORT TYPE"].value,
+        "CATEGORY": e.target["CATEGORY"].value,
+        "DESCRIPTION": e.target["DESCRIPTION"].value,
+        "NAMES INVOLVED": e.target["NAMES INVOLVED"].value,
+        "ACTION PREFERRED": e.target["ACTION PREFERRED"].value,
+        "NAME (OPT)": e.target["NAME (OPT)"].value,
+        "STATUS": "Under Review",
+        "POINTS": 0
+      };
+
+      fetch("https://sheetdb.io/api/v1/rc4ijgvrgun9f", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({data: data})
+      }).then(res => res.json())
+        .then(() => { alert("✅ Report submitted anonymously!"); e.target.reset(); })
+        .catch(err => alert("❌ Error: " + err));
+    });
+  </script>
+</body>
+</html>

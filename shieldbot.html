@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ShieldBot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at top left, #0a2342, #1f4068, #2ca58d);
+      margin: 0; padding: 0; color: #ffffff;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    nav {
+      background: rgba(10, 35, 66, 0.95);
+      padding: 15px; text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      position: sticky; top: 0; z-index: 1000;
+    }
+    nav a {
+      color: #fff; margin: 0 20px; text-decoration: none; font-weight: 600;
+      transition: color 0.3s, border-bottom 0.3s;
+    }
+    nav a:hover {
+      color: #2ca58d; border-bottom: 2px solid #2ca58d;
+    }
+
+    .hero {
+      text-align: center; padding: 60px 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3em; margin-bottom: 10px;
+      text-shadow: 0 0 20px #2ca58d, 0 0 40px #1f7a6d;
+    }
+    .hero p {
+      font-size: 1.2em; color: #d1e8e2;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    /* Chatbox container */
+    #chatbox {
+      width: 650px; margin: 30px auto;
+      background: rgba(255,255,255,0.08); backdrop-filter: blur(12px);
+      padding: 20px; border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      display: flex; flex-direction: column;
+    }
+
+    #messages {
+      height: 400px; overflow-y: auto;
+      background: rgba(255,255,255,0.12);
+      border-radius: 12px; padding: 15px; margin-bottom: 15px;
+      color: #fff;
+      display: flex; flex-direction: column;
+    }
+
+    .user, .bot {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      margin: 8px 0;
+      display: inline-block;
+      animation: fadeIn 0.4s ease-in;
+      line-height: 1.4em;
+    }
+    .user {
+      background: linear-gradient(135deg, #ffd700, #ffae00);
+      color: #000; font-weight: 600;
+      box-shadow: 0 0 15px #ffd700, 0 0 25px #ffae00;
+      align-self: flex-end;
+    }
+    .bot {
+      background: linear-gradient(135deg, #2ca58d, #1f7a6d);
+      color: #fff; font-weight: 600;
+      box-shadow: 0 0 15px #2ca58d, 0 0 25px #1f7a6d;
+      align-self: flex-start;
+    }
+
+    #input {
+      width: 75%; padding: 12px; border-radius: 10px; border: none;
+      background: rgba(255,255,255,0.2); color: #fff; font-size: 1em;
+      transition: box-shadow 0.3s;
+    }
+    #input:focus {
+      outline: none;
+      box-shadow: 0 0 12px #2ca58d;
+    }
+    button {
+      padding: 12px 20px; border-radius: 10px; border: none;
+      background: #2ca58d; color: #fff; font-weight: bold;
+      cursor: pointer; transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    }
+    button:hover {
+      background: #1f7a6d; transform: scale(1.05);
+      box-shadow: 0 0 12px #2ca58d;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Report</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="resources.html">Resources</a>
+    <a href="shieldbot.html">ShieldBot</a>
+  </nav>
+
+  <section class="hero">
+    <h1>🤖 ShieldBot</h1>
+    <p>Your supportive companion for wellbeing</p>
+  </section>
+
+  <div id="chatbox">
+    <div id="messages"></div>
+    <input id="input" type="text" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+  <script>
+  function getBotReply(userInput) {
+    const text = userInput.toLowerCase();
+
+    // Greetings
+    if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
+      return "Hello! How are you feeling today, Is there anything you would like to talk to me about? Im completely anonymous and here to listen. Remember, you can also talk to 5 trusted adults or Ms. Dempsey if you want to share how you’re feeling.";
+    }
+
+    // Judgement
+    if (text.includes("race") || text.includes("black") || text.includes("white") || text.includes("asian") || text.includes("accent") || text.includes("yellow") || text.includes("religion") || text.includes("judgment")) {
+      return "I’m sorry you’re experiencing this. Nobody should be treated unfairly, and we are all human regardless of our skin colour accent, relegion or anything. You deserve to be treated with respect and kindness, regardless of your race, religion, or any other aspect of your identity. Please talk to 5 trusted adults or Ms. Dempsey about what’s happening so they can support you through this. Remember, you are not alone and there are people who care about you and want to help.";
+    }
+
+    // Farewell
+    if (text.includes("bye") || text.includes("goodnight") || text.includes("see you")) {
+      return "Goodbye! Remember, ShieldBot is always here to listen. If you ever need to talk, just come back and share how you’re feeling. Take care! And remember we have a resouces page with lots of helpful information and support options if you ever need it.";
+    }
+
+    // Bullying
+    if (text.includes("bully") || text.includes("bullied")) {
+      return "I’m really sorry you’re experiencing bullying - you don’t have to face this alone. You deserve to feel safe and supported. Please talk to 5 trusted adults or Ms. Dempsey immediately so they can help you through this. Remember, bullying is never your fault and there are people who care about you and want to help. You are not alone, and support is available.";
+    }
+
+    // Appearance / insults
+    if (text.includes("ugly") || text.includes("fat") || text.includes("looks")) {
+      return "You are valuable and worthy regardless of what others say. Everyone has unique qualities that make them special and you deserve to be treated with kindness and respect. Remember, your worth isn’t defined by your appearance or what others say about you. Please talk to 5 trusted adults or Ms. Dempsey if you’re struggling with this.";
+    }
+
+    // Stress / exams
+    if (text.includes("exam") || text.includes("test") || text.includes("stress")) {
+      return "Exams can be stressful. Break study into smaller chunks, rest often, and share how you feel with friends, parents or even teachers. Remember, your worth isn’t defined by a grade and all that matters is that you do your best and take care of yourself.";
+    }
+
+    // Academic pressure
+    if (text.includes("academic pressure") || text.includes("school pressure")) {
+      return "Academic pressure can feel overwhelming. Try using techniques like time‑blocking, short breaks, and asking teachers for clarity. If it feels too heavy, remember you can always take a step back and work on it in parts and sections ensuring you don’t get overwhelmed and do your best because thats all that matters.";
+    }
+
+    // Online bullying
+    if (text.includes("online bullying") || text.includes("cyberbully") || text.includes("mean online")) {
+      return "Online bullying can be just as hurtful as in-person bullying. Remember to block and report anyone who is being mean to you online, and talk to 5 trusted adults or Ms. Dempsey about what’s happening so they can support you through this. You deserve to feel safe and supported both online and offline, and there are people who care about you and want to help.";
+    }
+
+    // Suicidal thoughts
+    if (text.includes("suicide") || text.includes("kill myself") || text.includes("jump off a building") || text.includes("self harm") || text.includes("end my life")) {
+      return "I hear how painful this feels. You don’t have to face these thoughts alone — please talk to 5 trusted adults or Ms. Dempsey immediately. Sharing how you feel is a brave step, and support is available. Remember, emotions are temporary and there are people who care about you and want to help you through this. Many people care a lot about you, even if it doesn’t feel that way right now. Please reach out to someone you trust — you deserve support and help.";
+    }
+
+    // Peer pressure
+    if (text.includes("peer pressure") || text.includes("pressure")) {
+      return "Peer pressure can feel overwhelming, especially when it seems like everyone else is doing something you’re not comfortable with. Remember that saying 'no' is a powerful choice, and staying true to your values shows strength. Please talk to 5 trusted adults or Ms. Dempsey if you need strategies to resist pressure, and dont feel scared to reach out, we are here for you.";
+    }
+
+    // Vaping / smoking / alcohol / drugs
+    if (text.includes("vape") || text.includes("smoke") || text.includes("cigarette") || text.includes("alcohol") || text.includes("drink") || text.includes("drugs")) {
+      return "It’s common to feel curious or pressured about vaping, smoking, or drinking, but these choices can seriously affect your health and future. If you’re feeling pushed into it, remember you have the right to protect yourself and say no. Even if its your friends that are pressuring you do know that if they do respect you and care about you they wont force you to do something that makes you uncomfortable. Vaping and smoking can lead to addiction and health problems, and alcohol can impair judgment and lead to risky situations. Please talk to 5 trusted adults or Ms. Dempsey if you’re struggling with this pressure or have questions about it.";
+    }
+
+    // Loneliness
+    if (text.includes("lonely") || text.includes("alone") || text.includes("isolated")) {
+      return "Feeling lonely can be tough. Try joining a club, weather thats sports teams, academics society, leadership, or even talking to classmates, and reaching out to someone new. Do reach out for support if you feel you are struggling with loneliness — connection can help.";
+    }
+
+    // Teacher conflict
+    if (text.includes("teacher") || text.includes("school staff") || text.includes("principal")) {
+      return "Conflicts with teachers or staff can feel intimidating. The best step is to calmly explain your side to someone you trust and seek guidance. Please talk to 5 trusted adults or Ms. Dempsey — they can help mediate and ensure your voice is heard. Teacher are not always right, and you deserve to be treated with respect and fairness. We will ensure your concerns are heard and addressed appropriately, so please don’t hesitate to reach out for support.";
+    }
+
+    // Sports pressure
+    if (text.includes("sports") || text.includes("competition") || text.includes("team") || text.includes("coach")) {
+      return "Sports can be exciting but also stressful when expectations feel too high. It’s okay to take breaks and remind yourself that your value isn’t only in performance";
+    }
+
+    // Relationships / crushes
+    if (text.includes("crush") || text.includes("relationship") || text.includes("dating") || text.includes("love")) {
+      return "Relationships and crushes can be fun and exciting, but also complex. It’s normal to feel nervous, excited, or even heartbroken. Make sure you know that you are worthy and amazing and deserve that respect and care, love is great but it's also important to take care of yourself and know your self worth.";
+    }
+
+    // General sadness / emotions
+    if (text.includes("sad") || text.includes("depressed") || text.includes("cry")) {
+      return "I hear you. Sharing your feelings with 5 trusted adults or Ms. Dempsey can make a big difference. Coping techniques like journaling, listening to calming music, or taking a walk can help in the moment, but please don’t carry this alone. Emotions are totally normal, no matter gender or age, its a way you express yourself and its important to share how you are feeling with people you trust.";
+    }
+
+    // Anxiety / panic attacks
+    if (text.includes("anxiety") || text.includes("panic") || text.includes("nervous")) {
+      return "Anxiety and panic attacks can feel frightening, like your body is out of control. Try slowing your breathing, grounding yourself by noticing five things around you, or talking it out with someone you trust. You could try the 5 finger breathing technique or even use resouces on our web page to help you.";
+    }
+
+    // Hopelessness
+    if (text.includes("hopeless") || text.includes("no hope") || text.includes("give up")) {
+      return "Feeling hopeless can be overwhelming, as if nothing will ever change. Please remember that emotions are temporary, and support can help impove thing - you don’t have to face this alone. You may want to talk to 5 trusted adults or even your friends if you feel more comfortable.";
+    }
+
+    // Greetings
+    if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
+      return "Hello! How are you feeling today, Is there anything you would like to talk to me about? Im completely anonymous and here to listen. Remember, you can also talk to 5 trusted adults or Ms. Dempsey if you want to share how you’re feeling.";
+    }
+
+    // Judgement
+    if (text.includes("race") || text.includes("black") || text.includes("white") || text.includes("asian") || text.includes("accent") || text.includes("yellow") || text.includes("religion") || text.includes("judgment")) {
+      return "I’m sorry you’re experiencing this. Nobody should be treated unfairly, and we are all human regardless of our skin colour accent, relegion or anything. You deserve to be treated with respect and kindness, regardless of your race, religion, or any other aspect of your identity. Please talk to 5 trusted adults or Ms. Dempsey about what’s happening so they can support you through this. Remember, you are not alone and there are people who care about you and want to help.";
+    }
+
+    // Farewell
+    if (text.includes("bye") || text.includes("goodnight") || text.includes("see you")) {
+      return "Goodbye! Remember, ShieldBot is always here to listen. If you ever need to talk, just come back and share how you’re feeling. Take care! And remember we have a resouces page with lots of helpful information and support options if you ever need it.";
+    }
+
+    // Bullying
+    if (text.includes("bully") || text.includes("bullied")) {
+      return "I’m really sorry you’re experiencing bullying - you don’t have to face this alone. You deserve to feel safe and supported. Please talk to 5 trusted adults or Ms. Dempsey immediately so they can help you through this. Remember, bullying is never your fault and there are people who care about you and want to help. You are not alone, and support is available.";
+    }
+
+    // Appearance / insults
+    if (text.includes("ugly") || text.includes("fat") || text.includes("looks")) {
+      return "You are valuable and worthy regardless of what others say. Everyone has unique qualities that make them special and you deserve to be treated with kindness and respect. Remember, your worth isn’t defined by your appearance or what others say about you. Please talk to 5 trusted adults or Ms. Dempsey if you’re struggling with this.";
+    }
+
+    // Stress / exams
+    if (text.includes("exam") || text.includes("test") || text.includes("stress")) {
+      return "Exams can be stressful. Break study into smaller chunks, rest often, and share how you feel with friends, parents or even teachers. Remember, your worth isn’t defined by a grade and all that matters is that you do your best and take care of yourself.";
+    }
+
+    // Academic pressure
+    if (text.includes("academic pressure") || text.includes("school pressure")) {
+      return "Academic pressure can feel overwhelming. Try using techniques like time‑blocking, short breaks, and asking teachers for clarity. If it feels too heavy, remember you can always take a step back and work on it in parts and sections ensuring you don’t get overwhelmed and do your best because thats all that matters.";
+    }
+
+    // Online bullying
+    if (text.includes("online bullying") || text.includes("cyberbully") || text.includes("mean online")) {
+      return "Online bullying can be just as hurtful as in-person bullying. Remember to block and report anyone who is being mean to you online, and talk to 5 trusted adults or Ms. Dempsey about what’s happening so they can support you through this. You deserve to feel safe and supported both online and offline, and there are people who care about you and want to help.";
+    }
+
+    // Suicidal thoughts
+    if (text.includes("suicide") || text.includes("kill myself") || text.includes("jump off a building") || text.includes("self harm") || text.includes("end my life")) {
+      return "I hear how painful this feels. You don’t have to face these thoughts alone — please talk to 5 trusted adults or Ms. Dempsey immediately. Sharing how you feel is a brave step, and support is available. Remember, emotions are temporary and there are people who care about you and want to help you through this. Many people care a lot about you, even if it doesn’t feel that way right now. Please reach out to someone you trust — you deserve support and help.";
+    }
+
+    // Peer pressure
+    if (text.includes("peer pressure") || text.includes("pressure")) {
+      return "Peer pressure can feel overwhelming, especially when it seems like everyone else is doing something you’re not comfortable with. Remember that saying 'no' is a powerful choice, and staying true to your values shows strength. Please talk to 5 trusted adults or Ms. Dempsey if you need strategies to resist pressure, and dont feel scared to reach out, we are here for you.";
+    }
+
+    // Vaping / smoking / alcohol / drugs
+    if (text.includes("vape") || text.includes("smoke") || text.includes("cigarette") || text.includes("alcohol") || text.includes("drink") || text.includes("drugs")) {
+      return "It’s common to feel curious or pressured about vaping, smoking, or drinking, but these choices can seriously affect your health and future. If you’re feeling pushed into it, remember you have the right to protect yourself and say no. Even if its your friends that are pressuring you do know that if they do respect you and care about you they wont force you to do something that makes you uncomfortable. Vaping and smoking can lead to addiction and health problems, and alcohol can impair judgment and lead to risky situations. Please talk to 5 trusted adults or Ms. Dempsey if you’re struggling with this pressure or have questions about it.";
+    }
+
+    // Loneliness
+    if (text.includes("lonely") || text.includes("alone") || text.includes("isolated")) {
+      return "Feeling lonely can be tough. Try joining a club, weather thats sports teams, academics society, leadership, or even talking to classmates, and reaching out to someone new. Do reach out for support if you feel you are struggling with loneliness — connection can help.";
+    }
+
+    // Teacher conflict
+    if (text.includes("teacher") || text.includes("school staff") || text.includes("principal")) {
+      return "Conflicts with teachers or staff can feel intimidating. The best step is to calmly explain your side to someone you trust and seek guidance. Please talk to 5 trusted adults or Ms. Dempsey — they can help mediate and ensure your voice is heard. Teacher are not always right, and you deserve to be treated with respect and fairness. We will ensure your concerns are heard and addressed appropriately, so please don’t hesitate to reach out for support.";
+    }
+
+    // Sports pressure
+    if (text.includes("sports") || text.includes("competition") || text.includes("team") || text.includes("coach")) {
+      return "Sports can be exciting but also stressful when expectations feel too high. It’s okay to take breaks and remind yourself that your value isn’t only in performance";
+    }
+
+    // Relationships / crushes
+    if (text.includes("crush") || text.includes("relationship") || text.includes("dating") || text.includes("love")) {
+      return "Relationships and crushes can be fun and exciting, but also complex. It’s normal to feel nervous, excited, or even heartbroken. Make sure you know that you are worthy and amazing and deserve that respect and care, love is great but it's also important to take care of yourself and know your self worth.";
+    }
+
+    // General sadness / emotions
+    if (text.includes("sad") || text.includes("depressed") || text.includes("cry")) {
+      return "I hear you. Sharing your feelings with 5 trusted adults or Ms. Dempsey can make a big difference. Coping techniques like journaling, listening to calming music, or taking a walk can help in the moment, but please don’t carry this alone. Emotions are totally normal, no matter gender or age, its a way you express yourself and its important to share how you are feeling with people you trust.";
+    }
+
+    // Anxiety / panic attacks
+    if (text.includes("anxiety") || text.includes("panic") || text.includes("nervous")) {
+      return "Anxiety and panic attacks can feel frightening, like your body is out of control. Try slowing your breathing, grounding yourself by noticing five things around you, or talking it out with someone you trust. You could try the 5 finger breathing technique or even use resouces on our web page to help you.";
+    }
+
+    // Hopelessness
+    if (text.includes("hopeless") || text.includes("no hope") || text.includes("give up")) {
+      return "Feeling hopeless can be overwhelming, as if nothing will ever change. Please remember that emotions are temporary, and support can help impove thing - you don’t have to face this alone. You may want to talk to 5 trusted adults or even your friends if you feel more comfortable.";
+    }
+
+        // Asking for help
+    if (text.includes("need help") || text.includes("asking for help") || text.includes("want support")) {
+      return "Asking for help shows strength, not weakness. Everyone needs support sometimes, and you deserve it too. If you feel overhwelmed and dont know what to do in situation, do talk to 5 trusted adults, this could be your parents, your teachers and somtimes it's nice to even talk to friends and share how you are feeling. Ms. Dempsey is also here to support you, so please reach out to her as well.";
+    }
+
+    // Anonymity reassurance
+    if (text.includes("really anonymous") || text.includes("report anonymous")) {
+      return "Yes — reports on the ShieldED Reports page are anonymous. We respect that some students may prefer to remain anonymous when reporting concerns. ShieldBot is here to listen, but if you want to formally report something, please use the Reports page. Your identity will be protected.";
+    }
+
+    // Created by who
+    if (text.includes("created by") || text.includes("design by who") || text.includes("who created you") || text.includes("made shielded") || text.includes("designed") || text.includes("who made you")) {
+      return "I was designed by Avni, and modified later in April by Avni and Adeline with the help of the ShieldED team and teachers to provide support and resources for students. If you have any questions or need assistance, please don't hesitate to ask! I'm here to help you with any concerns or questions you may have. Remember, you can also talk to 5 trusted adults or Ms. Dempsey if you need support or want to share how you're feeling. You can also report anonymously on the ShieldED Reports page if you want to share something serious without revealing your identity. Your wellbeing is important, and there are people who care about you and want to help." ;
+    }
+
+    const replies = [
+      "I hear you — thanks for sharing. Please also talk to 5 trusted adults or Ms. Dempsey if this feels serious. Remember, you don’t have to face this alone and there are people who care about you and want to help.",
+      "That sounds important. How do you feel about it? And remember, 5 trusted adults or Ms. Dempsey can support you if needed. You can also report anonymously on the ShieldED Reports page if you want to share something serious without revealing your identity.",
+      "I’m listening. Tell me more. And please share this with 5 trusted adults or Ms. Dempsey if it’s weighing heavily on you. Know that you have support and people who care about you. You can also report anonymously on the ShieldED Reports page if you want to share something serious without revealing your identity.",
+      "Thanks for opening up. What’s on your mind? Don’t forget you can also report anonymously on the ShieldED Reports page. We respect that some students may prefer to remain anonymous when sharing concerns, and we want to ensure you feel safe and supported in doing so. If this is a serious concern, please also talk to 5 trusted adults or Ms. Dempsey — they can provide support and guidance.",
+      "I understand. Let’s think about this together — and involve 5 trusted adults or Ms. Dempsey if it’s a serious concern. You can also report anonymously on the ShieldED Reports page if you want to share something serious without revealing your identity. Remember, you don’t have to face this alone and there are people who care about you and want to help."
+    ];
+    return replies[Math.floor(Math.random() * replies.length)];
+  }
+
+  function sendMessage() {
+    const inputBox = document.getElementById("input");
+    const input = inputBox.value.trim();
+    const messages = document.getElementById("messages");
+
+    if (!input) return;
+
+    messages.innerHTML += `<div class="user">You: ${input}</div>`;
+    const reply = getBotReply(input);
+
+    messages.innerHTML += `<div class="bot">ShieldBot: ${reply}</div>`;
+
+    inputBox.value = "";
+    messages.scrollTop = messages.scrollHeight;
+  }
+</script>
+</body>
+</html>

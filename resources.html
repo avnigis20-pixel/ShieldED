@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Resources</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0a2342, #2ca58d);
+      margin: 0; padding: 0; color: #fff;
+    }
+    nav {
+      background: #0a2342; padding: 15px; text-align: center;
+    }
+    nav a {
+      color: #fff; margin: 0 20px; text-decoration: none; font-weight: 600;
+      transition: color 0.3s, border-bottom 0.3s;
+    }
+    nav a:hover { color: #ffd700; border-bottom: 2px solid #ffd700; }
+
+    .hero {
+      text-align: center; padding: 60px 20px;
+      background: rgba(255,255,255,0.05);
+      animation: fadeIn 1.5s ease;
+    }
+    .hero h1 { font-size: 2.8em; margin-bottom: 10px; }
+    .hero p { font-size: 1.2em; color: #d1e8e2; }
+
+    .resources {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px; padding: 60px 20px;
+    }
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2), 0 0 30px rgba(44,165,141,0.4);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: fadeUp 1s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 0 25px #ffd700, 0 0 50px #2ca58d;
+    }
+    .card h3 {
+      margin-bottom: 12px;
+      font-size: 1.3em;
+      color: #ffd700;
+    }
+    .card i {
+      font-size: 2em;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    .card a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .card a:hover { color: #ffd700; }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.3);
+      font-size: 0.9em;
+      color: #d1e8e2;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Logo formatting */
+    .logo-left {
+      max-width: 140px;
+      margin: 0 12px;
+      display: inline-block;
+      filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 6px #ffffff);
+    }
+    .logo-right {
+      max-width: 175px;
+      margin: 0 12px;
+      display: inline-block;
+      filter: drop-shadow(0 0 2px #000000) drop-shadow(0 0 6px #000000);
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Report</a>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="resources.html">Resources</a>
+    <a href="shieldbot.html">ShieldBot</a>
+  </nav>
+
+  <section class="hero">
+    <img src="gis-logo.png" alt="Garden International School Logo" class="logo-left">
+    <img src="shielded-logo.png" alt="ShieldED Logo" class="logo-right">
+    <h1>📚 Helpful Resources</h1>
+    <p>Support, learning, and wellbeing tools for every student.</p>
+  </section>
+
+  <section class="resources">
+    <div class="card">
+      <i class="fa-solid fa-heart"></i>
+      <h3>Mental Health Support</h3>
+      <a href="https://www.mind.org.uk/" target="_blank">Visit Mind.org.uk</a>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-book-open"></i>
+      <h3>Academic Help</h3>
+      <a href="https://www.khanacademy.org/" target="_blank">Go to Khan Academy</a>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-gamepad"></i>
+      <h3>Mini Games</h3>
+      <a href="https://www.coolmathgames.com/" target="_blank">Play Cool Math Games</a>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-lightbulb"></i>
+      <h3>Study Tips</h3>
+      <a href="https://www.youtube.com/results?search_query=study+tips" target="_blank">Watch Study Videos</a>
+    </div>
+    <div class="card">
+      <i class="fa-solid fa-ban"></i>
+      <h3>Say No to Vapes/Drugs</h3>
+      <a href="https://www.samhsa.gov/prevention" target="_blank">Interactive Guide: Refusal Skills</a>
+    </div>
+  </section>
+
+  <footer>
+    🌟 "Your future is created by what you do today, not tomorrow." Stay motivated, stay shielded!
+  </footer>
+</body>
+</html>
